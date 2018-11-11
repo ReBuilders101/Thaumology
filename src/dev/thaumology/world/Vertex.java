@@ -13,6 +13,7 @@ public class Vertex {
 	protected Set<Linedef> otherLines;
 	protected Set<Linedef> allLines; //calculated from otherlines + l1 + l2
 	protected Map<Linedef, Double> angleMap;
+	protected boolean chs;
 	
 	public Linedef getFirstLine() {
 		return l1;
@@ -64,6 +65,10 @@ public class Vertex {
 	
 	public Map<Linedef, Double> getAngleMap(){
 		return angleMap;
+	}
+	
+	public boolean isChunkSeparator() {
+		return chs;
 	}
 	
 }
