@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SimpleBase"/>
 	<classpathentry kind="lib" path="D:/Lars/Prgm/WorkspaceEclipse/APIS/jnbt-1.1.jar"/>
+	<classpathentry kind="lib" path="D:/Lars/Prgm/WorkspaceEclipse/APIS/guava-26.0-jre.jar" sourcepath="D:/Lars/Prgm/WorkspaceEclipse/APIS/guava-26.0-jre_source_from_cfr.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
