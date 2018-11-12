@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SimpleBase"/>
-	<classpathentry kind="lib" path="D:/Lars/Prgm/WorkspaceEclipse/APIS/jnbt-1.1.jar"/>
-	<classpathentry kind="lib" path="D:/Lars/Prgm/WorkspaceEclipse/APIS/guava-26.0-jre.jar" sourcepath="D:/Lars/Prgm/WorkspaceEclipse/APIS/guava-26.0-jre_source_from_cfr.zip"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
