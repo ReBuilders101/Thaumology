@@ -8,7 +8,7 @@ import dev.thaumology.world.Linedef;
 public class LineIteratorItem {
 	
 	private Linedef line;
-	private double contextDx, contextDy, contextRotation, contextX, contextY;
+	private double contextDx, contextDy, contextRotation, contextX, contextY, contextAngle;
 	
 	/**
 	 * The {@link Linedef} that is described by this {@link LineIteratorItem}
@@ -18,6 +18,17 @@ public class LineIteratorItem {
 		return line;
 	}
 	
+	public LineIteratorItem(Linedef line, double contextDx, double contextDy, double contextRotation, double contextX,
+			double contextY) {
+		this.line = line;
+		this.contextDx = contextDx;
+		this.contextDy = contextDy;
+		this.contextRotation = contextRotation;
+		this.contextX = contextX;
+		this.contextY = contextY;
+		this.contextAngle = Math.atan2(contextDy, contextDx);
+	}
+
 	/**
 	 * The delta-X size of this line form the {@link LineIterator}'s perspective. The delta-X size 
 	 * is the difference between the x-Coordinate of the endpoint and the x-Coordinate of the staring point
@@ -59,6 +70,13 @@ public class LineIteratorItem {
 	 */
 	public double getGravityRotation() {
 		return contextRotation;
+	}
+	
+	/**
+	 * The Angle (dy/dx) of this line
+	 */
+	public double getAngle() {
+		return contextAngle;
 	}
 	
 }
