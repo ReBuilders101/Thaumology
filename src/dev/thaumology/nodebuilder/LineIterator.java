@@ -9,10 +9,6 @@ public class LineIterator implements Iterable<LineIteratorItem>{
 	protected Deque<LineIteratorItem> items;
 	protected Linedef line;
 	
-	public Deque<LineIteratorItem> getItems(){
-		return items;
-	}
-	
 	public Linedef getLinedef() {
 		return line;
 	}
@@ -25,6 +21,14 @@ public class LineIterator implements Iterable<LineIteratorItem>{
 	public LineIterator(Deque<LineIteratorItem> items, Linedef line) {
 		this.items = items;
 		this.line = line;
+	}
+	
+	public LineIteratorItem peek() {
+		return items.peek();
+	}
+	
+	public LineIteratorItem pop() {
+		return items.pop();
 	}
 	
 }
