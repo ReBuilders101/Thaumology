@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import dev.thaumology.io.LinedefPrimer;
+
 /**
  * Represents a World with all Entities, Tiles, Linedefs and Vertices
  */
@@ -14,6 +16,8 @@ public abstract class World {
 	private BiMap<Linedef, Integer> linedefMap;
 	private BiMap<Tile,    Integer> tileMap;
 	private BiMap<Entity,  Integer> entityMap;
+	
+	private boolean isInitialized = false;
 	
 	public World(List<Vertex> orderedVertices, List<Linedef> orderedLinedefs, 
 			List<Tile> orderedTiles, List<Entity> orderedEntities) {
@@ -37,6 +41,16 @@ public abstract class World {
 		for(int i = 0; i < orderedEntities.size(); i++) {
 			entityMap.put(orderedEntities.get(i), i);
 		}
+	}
+	
+	public void initPrimers() {
+		if(isInitialized) return;
+		for(Linedef l : linedefMap.keySet()) {
+			if(l instanceof LinedefPrimer) {
+				((LinedefPrimer) l).process(this);
+			}
+		}
+		isInitialized = true;
 	}
 	
 	public Vertex getVertex(int index) {
