@@ -64,4 +64,50 @@ public abstract class Linedef {
 		if(v == v2) return v1;
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(gravity);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(length);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((v1 == null) ? 0 : v1.hashCode());
+		result = prime * result + ((v2 == null) ? 0 : v2.hashCode());
+		result = prime * result + ((world == null) ? 0 : world.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Linedef other = (Linedef) obj;
+		if (Double.doubleToLongBits(gravity) != Double.doubleToLongBits(other.gravity))
+			return false;
+		if (Double.doubleToLongBits(length) != Double.doubleToLongBits(other.length))
+			return false;
+		if (v1 == null) {
+			if (other.v1 != null)
+				return false;
+		} else if (!v1.equals(other.v1))
+			return false;
+		if (v2 == null) {
+			if (other.v2 != null)
+				return false;
+		} else if (!v2.equals(other.v2))
+			return false;
+		if (world == null) {
+			if (other.world != null)
+				return false;
+		} else if (!world.equals(other.world))
+			return false;
+		return true;
+	}
 }

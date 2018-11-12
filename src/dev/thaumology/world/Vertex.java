@@ -70,5 +70,57 @@ public class Vertex {
 	public boolean isChunkSeparator() {
 		return chs;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((allLines == null) ? 0 : allLines.hashCode());
+		result = prime * result + ((angleMap == null) ? 0 : angleMap.hashCode());
+		result = prime * result + (chs ? 1231 : 1237);
+		result = prime * result + ((l1 == null) ? 0 : l1.hashCode());
+		result = prime * result + ((l2 == null) ? 0 : l2.hashCode());
+		result = prime * result + ((otherLines == null) ? 0 : otherLines.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vertex other = (Vertex) obj;
+		if (allLines == null) {
+			if (other.allLines != null)
+				return false;
+		} else if (!allLines.equals(other.allLines))
+			return false;
+		if (angleMap == null) {
+			if (other.angleMap != null)
+				return false;
+		} else if (!angleMap.equals(other.angleMap))
+			return false;
+		if (chs != other.chs)
+			return false;
+		if (l1 == null) {
+			if (other.l1 != null)
+				return false;
+		} else if (!l1.equals(other.l1))
+			return false;
+		if (l2 == null) {
+			if (other.l2 != null)
+				return false;
+		} else if (!l2.equals(other.l2))
+			return false;
+		if (otherLines == null) {
+			if (other.otherLines != null)
+				return false;
+		} else if (!otherLines.equals(other.otherLines))
+			return false;
+		return true;
+	}
 	
 }
