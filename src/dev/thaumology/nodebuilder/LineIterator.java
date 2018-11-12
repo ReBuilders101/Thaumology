@@ -1,16 +1,15 @@
 package dev.thaumology.nodebuilder;
 
+import java.util.Deque;
 import java.util.Iterator;
-import java.util.List;
-
 import dev.thaumology.world.Linedef;
 
 public class LineIterator implements Iterable<LineIteratorItem>{
 	
-	protected List<LineIteratorItem> items;
+	protected Deque<LineIteratorItem> items;
 	protected Linedef line;
 	
-	public List<LineIteratorItem> getItems(){
+	public Deque<LineIteratorItem> getItems(){
 		return items;
 	}
 	
@@ -21,6 +20,11 @@ public class LineIterator implements Iterable<LineIteratorItem>{
 	@Override
 	public Iterator<LineIteratorItem> iterator() {
 		return items.iterator();
+	}
+
+	public LineIterator(Deque<LineIteratorItem> items, Linedef line) {
+		this.items = items;
+		this.line = line;
 	}
 	
 }

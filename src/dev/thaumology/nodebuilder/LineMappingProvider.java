@@ -1,6 +1,7 @@
 package dev.thaumology.nodebuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -70,6 +71,8 @@ public class LineMappingProvider {
 				}
 			}
 		}
+		//Now register a new LineIterator
+		iterators.put(line, new LineIterator(result, line));
 	}
 	
 	protected LineIteratorItem generateItem(QueuedLinedef qline) {
