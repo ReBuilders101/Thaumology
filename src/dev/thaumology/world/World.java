@@ -5,8 +5,6 @@ import java.util.List;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import dev.thaumology.io.LinedefPrimer;
-
 /**
  * Represents a World with all Entities, Tiles, Linedefs and Vertices
  */
@@ -43,13 +41,9 @@ public abstract class World {
 		}
 	}
 	
-	public void initPrimers() {
+	public void init() {
 		if(isInitialized) return;
-		for(Linedef l : linedefMap.keySet()) {
-			if(l instanceof LinedefPrimer) {
-				((LinedefPrimer) l).process(this, this::getVertex);
-			}
-		}
+		//Might still need this method
 		isInitialized = true;
 	}
 	

@@ -57,14 +57,14 @@ public final class LevelFactory {
 		final ListTag entis = Validate.listTagOf(entis0, CompoundTag.class, 
 				new LevelFormatException("Entities subtag is not a list", entis0),
 				new LevelFormatException("Entities subtag is not a list of compounds", entis0));
-		final List<LinedefPrimer> linedefList = new ArrayList<>();
+		final List<Linedef> linedefList = new ArrayList<>();
 		final List<Vertex>        vertexList = new ArrayList<>();
 		final List<Tile>          tileList = new ArrayList<>();
 		final List<Entity>        entityList = new ArrayList<>();
 		
 		//Can't use foreach() because of exceptions
 		for(Tag line : lines.getValue()) {
-			linedefList.add(createLinedefPrimer(line));
+			linedefList.add(createLinedef(line));
 		}
 		for(Tag vert : verts.getValue()) {
 			vertexList.add(createVertex(vert, linedefList::get));
@@ -75,7 +75,7 @@ public final class LevelFactory {
 		return null;
 	}
 	
-	public static LinedefPrimer createLinedefPrimer(Tag tag) throws LevelFormatException{
+	public static Linedef createLinedef(Tag tag) throws LevelFormatException{
 		return null;
 	}
 	
