@@ -1,6 +1,9 @@
 package dev.thaumology.io;
 
+import java.util.function.Function;
+
 import dev.thaumology.world.Linedef;
+import dev.thaumology.world.Vertex;
 import dev.thaumology.world.World;
 
 public class LinedefPrimer extends Linedef{
@@ -13,8 +16,8 @@ public class LinedefPrimer extends Linedef{
 		vert2Id = vertex2Id;
 	}
 	
-	public void process(World world) {
-		setWorldAndvertices(world, world.getVertex(vert1Id), world.getVertex(vert2Id));
+	public void process(World world, Function<Integer, Vertex> vertexSupplier) {
+		setWorldAndvertices(world, vertexSupplier.apply(vert1Id), vertexSupplier.apply(vert2Id));
 	}
 	
 }

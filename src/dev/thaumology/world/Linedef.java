@@ -10,6 +10,11 @@ public abstract class Linedef {
 	private Vertex v1,v2;
 	private double length, gravity;
 	
+	protected Linedef(double length, double gravity) {
+		this.length = length;
+		this.gravity = gravity;
+	}
+	
 	/**
 	 * The first {@link Vertex} is the starting point of the linedef.
 	 * @return The first Vertex
@@ -65,6 +70,12 @@ public abstract class Linedef {
 		return null;
 	}
 
+	protected void setWorldAndvertices(World world, Vertex v1, Vertex v2) {
+		this.world = world;
+		this.v1 = v1;
+		this.v2 = v2;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

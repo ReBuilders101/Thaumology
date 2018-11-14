@@ -1,11 +1,8 @@
 package dev.thaumology.nodebuilder;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -67,7 +64,7 @@ public class LineMappingProvider {
 						}
 					}
 				} else {
-					System.out.println("Reached CHunk distance (Debug)!"); //log
+					System.out.println("Reached Chunk distance (Debug)!"); //log
 				}
 			}
 		}
@@ -78,13 +75,17 @@ public class LineMappingProvider {
 	protected LineIteratorItem generateItem(QueuedLinedef qline) {
 		double angle0 = qline.getConnectingVertex().getAngle(qline.getConnectingLine(), qline.getLineToProcess());
 		double angle1 = qline.getConnectingItem().getAngle();
-		double angle2 = angle0 + angle1 - MathUtils.DEGREE_180; 
+		double angle2 = angle0 + angle1 - MathUtils.DEGREE_180; //TODO check if this even works
 		double dx = Math.cos(angle2) * qline.getLineToProcess().getLength();
 		double dy = Math.sin(angle2) * qline.getLineToProcess().getLength();
 		double x = qline.getConnectingItem().getX() + qline.getConnectingItem().getDx();
 		double y = qline.getConnectingItem().getY() + qline.getConnectingItem().getDy();
-		double g = 0; //TODO
+		double g = 0; //TODO gravity
 		return new LineIteratorItem(qline.getLineToProcess(), dx, dy, g, x, y);
+	}
+	
+	public void registerIterator(LineIterator iterator) {
+		iterators.put(iterator.getLinedef(), iterator);
 	}
 	
 }

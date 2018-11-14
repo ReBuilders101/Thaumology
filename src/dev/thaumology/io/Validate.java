@@ -1,5 +1,6 @@
 package dev.thaumology.io;
 
+import org.jnbt.CompoundTag;
 import org.jnbt.ListTag;
 import org.jnbt.Tag;
 
@@ -42,6 +43,10 @@ public final class Validate {
 		} catch (Exception e) {
 			return def;
 		}
+	}
+	
+	public static <E extends Exception> Tag getTag(CompoundTag parent, String name, E nullEx) throws E {
+		return notNull(parent.getValue().get(name), nullEx);
 	}
 	
 }

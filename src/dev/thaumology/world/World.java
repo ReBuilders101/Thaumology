@@ -47,7 +47,7 @@ public abstract class World {
 		if(isInitialized) return;
 		for(Linedef l : linedefMap.keySet()) {
 			if(l instanceof LinedefPrimer) {
-				((LinedefPrimer) l).process(this);
+				((LinedefPrimer) l).process(this, this::getVertex);
 			}
 		}
 		isInitialized = true;
