@@ -1,26 +1,40 @@
 package dev.thaumology.world;
 
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+
 /**
- * A lindef describes a straight line connecting two vertices that has a defined orientation and length
- * Surface lines have to point to the right if the air side is up.
+ * A linedef is a connection between two vertices. Linedefs act as borders for {@link Sector}s and can additionally trigger Actions.
  */
 public abstract class Linedef {
 
-	private World world;
-	private Vertex v1,v2;
-	private double length, gravity;
-	
-	protected Linedef(double length, double gravity) {
-		this.length = length;
-		this.gravity = gravity;
+	private final Vertex vertex1;
+	private final Vertex vertex2;
+	private final Sector sector1;
+	private final Sector sector2;
+
+	/**
+	 * Creates a new Linedef. Since this class is abstract, this can only be used by implementing classes as a superclass constructor.
+	 * The order of Vertices and Sectors does not matter. Sectors may be {@link SectorPrimer}s if they are initialized later.
+	 * @param vertex1 The first {@link Vertex} that this linedef connects to
+	 * @param vertex2 The second {@link Vertex} that this linedef connects to
+	 * @param sector1 The first {@link Sector} that is bordered by this linedef
+	 * @param sector2 The second {@link Sector} that is bordered by this linedef
+	 */
+	protected Linedef(Vertex vertex1, Vertex vertex2, Sector sector1, Sector sector2) {
+		this.vertex1 = vertex1;
+		this.vertex2 = vertex2;
+		this.sector1 = sector1;
+		this.sector2 = sector2;
 	}
-	
+
 	/**
 	 * The first {@link Vertex} is the starting point of the linedef.
 	 * @return The first Vertex
 	 */
 	public Vertex getFirstVertex() {
-		return v1;
+		return vertex1;
 	}
 	
 	/**
@@ -28,97 +42,114 @@ public abstract class Linedef {
 	 * @return The second Vertex
 	 */
 	public Vertex getSecondVertex() {
-		return v2;
+		return vertex2;
 	}
 	
 	/**
-	 * @return The length of this linedef
+	 * Returns the {@link Vertex} associated with this linedef that is not equal to the vertex in the parameter.
+	 * If the vertex in the parameter is neither the first nor the second vertex of this linedef, this 
+	 * method returns <code>null</code>.
+	 * @param vertex The {@link Vertex} that should not be returned
+	 * @return The {@link Vertex} that is not the one in the parameter
 	 */
-	public double getLength() {
-		return length;
-	}
-	
-	/**
-	 * @return The {@link World} that contains this linedef
-	 */
-	public World getWorld() {
-		return world;
-	}
-	
-	/**
-	 * A surface line is a line that is a walkable surface for entities
-	 * @return If this line is a surface line
-	 */
-	public boolean isSurfaceLine() {
-		return true;
-	}
-	
-	/**
-	 * Describes the Angle of the down direction for tiles and entities relative to the linedef (straight down would be 270°)
-	 */
-	public double getGravityDirection() {
-		return gravity;
-	}
-	
-	/**
-	 * 
-	 * @return The vertex that is at one end of the line but not the one in the parameter. Null if parameter is not on linedef
-	 */
-	public Vertex getOtherVertex(Vertex v) {
-		if(v == v1) return v2;
-		if(v == v2) return v1;
+	public Vertex getOtherVertex(Vertex vertex) {
+		if(vertex == vertex1) return vertex2;
+		if(vertex == vertex2) return vertex1;
 		return null;
 	}
-
-	protected void setWorldAndvertices(World world, Vertex v1, Vertex v2) {
-		this.world = world;
-		this.v1 = v1;
-		this.v2 = v2;
+	
+	/**
+	 * This method calculates the square of the length of this linedef, assuming that the linedef connects
+	 * the two vertices in a straight line. The result of this method is recalculated for every call.
+	 * @return The squared length of this linedef
+	 * @see #getLength()
+	 */
+	public double getLengthSq() {
+		int dx = getDx();
+		int dy = getDy();
+		return (dx * dx) + (dy * dy);
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(gravity);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(length);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((v1 == null) ? 0 : v1.hashCode());
-		result = prime * result + ((v2 == null) ? 0 : v2.hashCode());
-		result = prime * result + ((world == null) ? 0 : world.hashCode());
-		return result;
+	/**
+	 * This method calculates the length of this linedef, assuming that the linedef connects
+	 * the two vertices in a straight line. The result of this method is recalculated for every call.<br>
+	 * Whenever possible, {@link #getLengthSq()} should be used instead.
+	 * @return The length of this linedef
+	 * @see #getLengthSq()
+	 */
+	public double getLength() {
+		return Math.sqrt(getLengthSq());
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Linedef other = (Linedef) obj;
-		if (Double.doubleToLongBits(gravity) != Double.doubleToLongBits(other.gravity))
-			return false;
-		if (Double.doubleToLongBits(length) != Double.doubleToLongBits(other.length))
-			return false;
-		if (v1 == null) {
-			if (other.v1 != null)
-				return false;
-		} else if (!v1.equals(other.v1))
-			return false;
-		if (v2 == null) {
-			if (other.v2 != null)
-				return false;
-		} else if (!v2.equals(other.v2))
-			return false;
-		if (world == null) {
-			if (other.world != null)
-				return false;
-		} else if (!world.equals(other.world))
-			return false;
-		return true;
+	/**
+	 * Calculates the delta-x value for this linedef, that is the difference between the second vertex' x-coordinate and the
+	 * first vertex' x-coordinate. Note that the sign of the result depends on the order of vertices in this linedef. 
+	 * @return The delta-x length for this line
+	 */
+	public int getDx() {
+		return vertex2.getX() - vertex1.getX();
 	}
+	
+	/**
+	 * Calculates the delta-y value for this linedef, that is the difference between the second vertex' y-coordinate and the
+	 * first vertex' y-coordinate. Note that the sign of the result depends on the order of vertices in this linedef. 
+	 * @return The delta-y length for this line
+	 */
+	public int getDy() {
+		return vertex2.getY() - vertex1.getY();
+	}
+	
+	/**
+	 * A linedef separates two sectors, which are saved on the linedef. The order of the two sectors does not matter.
+	 * @return The first sector bordered by this linedef
+	 */
+	public Sector getFirstSector() {
+		return sector1;
+	}
+	
+	/**
+	 * A linedef separates two sectors, which are saved on the linedef. The order of the two sectors does not matter.
+	 * @return The second sector bordered by this linedef
+	 */
+	public Sector getSecondSector() {
+		return sector2;
+	}
+	
+	/**
+	 * Returns the {@link Sector} associated with this linedef that is not equal to the sector in the parameter.
+	 * If the sector in the parameter is neither the first nor the second sector of this linedef, this 
+	 * method returns <code>null</code>.
+	 * @param sector The {@link Sector} that should not be returned
+	 * @return The {@link Sector} that is not the one in the parameter
+	 */
+	public Sector getOtherSector(Sector sector) {
+		if(sector == sector1) return sector2;
+		if(sector == sector2) return sector1;
+		return null;
+	}
+	
+	/**
+	 * Adds this linedef to a {@link GeneralPath}. Implementation must provide their own code, which can add any amount
+	 * of line segments to the path.<br>
+	 * The added segments <b>should not</b> make the path discontinuous, they should connect the starting and ending vertex
+	 * without interruption.
+	 * @param path The {@link GeneralPath} that should be used to create a {@link Sector} or {@link Shape}
+	 * @param invert If <code>false</code>, the path will be at the position of the starting {@link Vertex} when this method is called,
+	 * if this parameter is <code>true</code>, the path will be at the ending {@link Vertex} when this method is called
+	 */
+	public abstract void addToPath(GeneralPath path, boolean invert);
+	
+	/**
+	 * The bounding rectangle describes the smallest rectangular area that contains the whole line.
+	 * This means that only points inside the bounding rectangle can touch the line.
+	 * @return A bounding rectangle for this linedef
+	 */
+	public abstract Rectangle2D getBounds();
+	
+	/**
+	 * The actual length of the {@link Linedef} can be different from the length returned by {@link #getLength()},
+	 * when the Linedef does not describe a straight line. In this case, this method will return the length of the (curved) line.
+	 * @return The length of the actual line
+	 */
+	public abstract double getPathLength();
 }
