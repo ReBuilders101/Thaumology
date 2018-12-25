@@ -3,6 +3,9 @@ package dev.thaumology.world;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
+import dev.thaumology.io.LinedefConstructor;
 
 /**
  * A linedef is a connection between two vertices. Linedefs act as borders for {@link Sector}s and can additionally trigger Actions.
@@ -152,4 +155,31 @@ public abstract class Linedef {
 	 * @return The length of the actual line
 	 */
 	public abstract double getPathLength();
+	
+	/////////Static parts//////////////
+	
+	private static final Map<Integer, LinedefConstructor> constructorMap = new HashMap<>();
+	
+	/**
+	 * Attempts to find a modded method that can convert a saved NBT-tag to a {@link Linedef} instance.
+	 * This method will only be called for typeIds that are unknown to the unmodified game.
+	 * @param typeId A saved identifier number that maps to a runtime type of {@link Linedef}
+	 * @return The {@link LinedefConstructor} used to create a linedef of that type. 
+	 */
+	public static LinedefConstructor getConstructorFor(int typeId) {
+		return constructorMap.get(typeId);
+	}
+	
+	/**
+	 * Registers a modded method that can convert a saved NBT-tag to a {@link Linedef} instance for
+	 * a certain typeId.
+	 * This method will only be used for typeIds that are unknown to the unmodified game.
+	 * @param constructor The {@link LinedefConstructor} used to create a linedef of that type.
+	 * @param typeId A saved identifier number that maps to a runtime type of {@link Linedef} 
+	 */
+	public static void registerConstructor(LinedefConstructor constructor, int typeId) {
+		constructorMap.put(typeId, constructor);
+	}
+	
+	
 }
