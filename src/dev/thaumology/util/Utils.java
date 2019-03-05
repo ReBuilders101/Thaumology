@@ -1,4 +1,4 @@
-package dev.thaumology;
+package dev.thaumology.util;
 
 public final class Utils {
 	
