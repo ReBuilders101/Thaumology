@@ -49,4 +49,14 @@ public final class Validate {
 		return notNull(parent.getValue().get(name), nullEx);
 	}
 	
+	public static <E extends Exception, F extends Exception, R extends Tag> R getTag(CompoundTag parent, String name, Class<R> type, E nullEx, F typeEx) throws E, F {
+		return type(getTag(parent, name, nullEx), type, typeEx);
+	}
+	
+	public static <E extends Exception, F extends Exception, G extends Exception> ListTag getListTagOf(CompoundTag parent, String name, Class<? extends Tag> elementType, E nullEx, F typeEx, G elementEx) throws E, F, G {
+		return listTagOf(
+				getTag(parent, name, ListTag.class, nullEx, typeEx)
+				, elementType, typeEx, elementEx);
+	}
+	
 }

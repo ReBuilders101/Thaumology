@@ -5,6 +5,9 @@ import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
+import dev.thaumology.world.core.Sector;
+import dev.thaumology.world.core.Vertex;
+
 public class LinedefStraight extends Linedef{
 
 	/**

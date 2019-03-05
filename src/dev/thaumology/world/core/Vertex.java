@@ -1,4 +1,4 @@
-package dev.thaumology.world;
+package dev.thaumology.world.core;
 
 /**
  * A Vertex represents a node in a 2D terrain, saving the x and y coordinate as well as the terrain height at this point
@@ -8,7 +8,6 @@ public class Vertex {
 	private final int x;
 	private final int y;
 	private final int height;
-//	private final Linedef[] lines;
 
 	/**
 	 * Creates a new {@link Vertex} with these values
@@ -20,7 +19,6 @@ public class Vertex {
 		this.x = x;
 		this.y = y;
 		this.height = height;
-//		this.lines = lines;
 	}
 
 	/**
@@ -43,8 +41,4 @@ public class Vertex {
 	public int getHeight() {
 		return height;
 	}
-	
-//	public Linedef[] getConnectedLines() {
-//		return lines;
-//	}
 }

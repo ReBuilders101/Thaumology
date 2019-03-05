@@ -1,5 +1,5 @@
 package dev.thaumology.world;
 
-public class Area {
+public class Action<T> {
 
 }

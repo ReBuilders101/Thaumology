@@ -6,6 +6,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 import dev.thaumology.io.LinedefConstructor;
+import dev.thaumology.world.core.Sector;
+import dev.thaumology.world.core.Vertex;
 
 /**
  * A linedef is a connection between two vertices. Linedefs act as borders for {@link Sector}s and can additionally trigger Actions.
